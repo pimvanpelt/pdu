@@ -13,21 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+#pragma once
+
 #include "mgos.h"
-#include "modbus.h"
-#include "rpc.h"
+#include "mgos_rpc.h"
 
-static void button_handler(int pin, void *args) {
-  LOG(LL_INFO, ("Button pressed, persisting state"));
-  modbus_state_write();
-}
-
-enum mgos_app_init_result mgos_app_init(void) {
-  modbus_init(mgos_sys_config_get_pdu_modbus_interval(),
-              mgos_sys_config_get_pdu_state_interval(), STATE_FILENAME);
-  mgos_gpio_set_button_handler(39, MGOS_GPIO_PULL_UP, MGOS_GPIO_INT_EDGE_NEG,
-                               100, button_handler, NULL);
-  rpc_init();
-
-  return MGOS_APP_INIT_SUCCESS;
-}
+void rpc_init();

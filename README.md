@@ -27,7 +27,6 @@ The firmware exposes several getters over Mongoose OS RPC subsystem.
 *    ***Channel.GetCurrent***: 
 *    ***Channel.GetFrequency***: 
 *    ***Channel.GetCumulative***: 
-*    ***Channel.ClearCumulative***:
+*    ***Channel.Clear***:
 *    ***State.Read***:
 *    ***State.Write***:
-*    ***State.Delete***:

@@ -76,7 +76,7 @@ static void mb_read_response_handler(uint8_t status,
          s_pdu.pdu_channel[i].raw_ratio));
   }
   double delta = s_pdu.last_read_time - last_read_time;
-  if (delta > MODBUS_READ_STALE_THRESH) {
+  if (delta > 3 * mgos_sys_config_get_pdu_modbus_interval()) {
     LOG(LL_WARN,
         ("Modbus last read was %.f seconds ago, considering stale", delta));
     return;

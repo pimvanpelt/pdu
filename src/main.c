@@ -22,7 +22,8 @@ static void button_handler(int pin, void *args) {
 }
 
 enum mgos_app_init_result mgos_app_init(void) {
-  modbus_init(MODBUS_TIMER_DEFAULT, STATE_TIMER_DEFAULT, STATE_FILENAME);
+  modbus_init(mgos_sys_config_get_pdu_modbus_interval(),
+              mgos_sys_config_get_pdu_state_interval(), STATE_FILENAME);
   mgos_gpio_set_button_handler(39, MGOS_GPIO_PULL_UP, MGOS_GPIO_INT_EDGE_NEG,
                                100, button_handler, NULL);
 

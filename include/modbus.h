@@ -23,11 +23,6 @@
 #define PDU_NUM_CHANNELS 16
 #define PDU_VOLTAGE 232.
 
-#define MODBUS_READ_STALE_THRESH \
-  30  // Do not integrate measurements more than X seconds apart.
-
-#define MODBUS_TIMER_DEFAULT 5  // Seconds
-#define STATE_TIMER_DEFAULT 24  // Hours
 #define STATE_FILENAME "state-v0.bin"
 
 struct pdu_channel {

@@ -23,9 +23,6 @@ config_schema:
   - ["wifi.sta.ssid", "Dapches"]
   - ["wifi.sta.password", "marielle"]
   - ["http.enable", true]
-  - ["pdu", "o", {title: "PDU settings"}]
-  - ["pdu.hostname", "s", {title: "Device hostname"}]
-  - ["pdu.hostname", "pdu-test"]
   - ["modbus.enable", true]
   - ["modbus.timeout", 1000]
   - ["modbus.uart_no", 1]
@@ -35,7 +32,17 @@ config_schema:
   - ["modbus.baudrate", 9600]
   - ["modbus.parity", 0]
   - ["modbus.stop_bits", 1]
-
+  - ["pdu", "o", {title: "PDU settings"}]
+  - ["pdu.hostname", "s", {title: "Device hostname"}]
+  - ["pdu.hostname", "pdu-test"]
+  - ["pdu.location", "s", {title: "Physical location"}]
+  - ["pdu.location", "Zurich, Switzerland"]
+  - ["pdu.contact", "s", {title: "Administrative contact (e-mail)"}]
+  - ["pdu.contact", "admin@example.com"]
+  - ["pdu.state_interval", "i", {title: "State persist interval, in hours"}]
+  - ["pdu.state_interval", 24]
+  - ["pdu.modbus_interval", "i", {title: "Modbus polling interval, in seconds"}]
+  - ["pdu.modbus_interval", 5]
 
 # List of libraries used by this app, in order of initialisation
 libs:

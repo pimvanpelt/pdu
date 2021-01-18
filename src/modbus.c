@@ -173,7 +173,7 @@ bool modbus_state_read(const char *state_filename) {
 
   // All sanity checks passed, let's consume the state file!
   memcpy(&s_pdu, &new_pdu, sizeof(struct pdu));
-  LOG(LL_INFO, ("Read state from %s", state_filename));
+  LOG(LL_INFO, ("OK: Read state from %s", state_filename));
 
   ret = true;
 exit:
@@ -190,6 +190,7 @@ bool modbus_state_write(void) {
   if (0 == strlen(s_pdu.state_filename)) return false;
   last_save_time = s_pdu.last_save_time;
 
+  LOG(LL_INFO, ("Writing state to %s", s_pdu.state_filename));
   fd = open(s_pdu.state_filename, O_WRONLY | O_CREAT | O_TRUNC);
   if (fd < 0) {
     LOG(LL_ERROR,
@@ -203,7 +204,7 @@ bool modbus_state_write(void) {
                    sizeof(struct pdu), bytes_written));
     goto exit;
   }
-  LOG(LL_INFO, ("State persisted to %s", s_pdu.state_filename));
+  LOG(LL_INFO, ("OK: Wrote state to %s", s_pdu.state_filename));
 
   ret = true;
 exit:

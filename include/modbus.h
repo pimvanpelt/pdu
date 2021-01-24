@@ -21,7 +21,7 @@
 #include "mgos_modbus.h"
 
 #define PDU_NUM_CHANNELS 16
-#define PDU_VOLTAGE 232.
+#define PDU_VOLTAGE 220.
 
 #define STATE_FILENAME "state-v0.bin"
 

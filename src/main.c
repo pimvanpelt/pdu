@@ -15,6 +15,7 @@
  */
 #include "mgos.h"
 #include "modbus.h"
+#include "mqtt.h"
 #include "rpc.h"
 
 static void button_handler(int pin, void *args) {
@@ -22,12 +23,21 @@ static void button_handler(int pin, void *args) {
   modbus_state_write();
 }
 
+static void mqtt_timer(void *args) {
+  mqtt_publish_stat("stat/pdu", "{%s:%s}", "\"something\"", "true");
+}
+
 enum mgos_app_init_result mgos_app_init(void) {
   modbus_init(mgos_sys_config_get_pdu_modbus_interval(),
               mgos_sys_config_get_pdu_state_interval(), STATE_FILENAME);
   mgos_gpio_set_button_handler(39, MGOS_GPIO_PULL_UP, MGOS_GPIO_INT_EDGE_NEG,
                                100, button_handler, NULL);
+
   rpc_init();
+
+  mqtt_init();
+  mgos_set_timer(1000 * mgos_sys_config_get_pdu_mqtt_interval(),
+                 MGOS_TIMER_REPEAT, mqtt_timer, NULL);
 
   return MGOS_APP_INIT_SUCCESS;
 }

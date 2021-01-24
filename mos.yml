@@ -1,6 +1,6 @@
 author: Pim van Pelt <pim@ipng.nl>
 description: Power Distribution Unit with 16 current sensed ports
-version: 1.0
+version: 1.1
 platform: esp32
 
 libs_version: ${mos.version}
@@ -17,6 +17,12 @@ sources:
 includes:
   - include
 
+fs:
+  - fs/mqtt.pem
+
+filesystem:
+  - fs
+
 config_schema:
   - ["wifi.ap.enable", false]
   - ["wifi.sta.enable", true]
@@ -32,6 +38,10 @@ config_schema:
   - ["modbus.baudrate", 9600]
   - ["modbus.parity", 0]
   - ["modbus.stop_bits", 1]
+  - ["mqtt.enable", true]
+  - ["rpc.mqtt.enable", true]
+  - ["mqtt.server", "mqtt.ipng.nl:8883"]
+  - ["mqtt.ssl_ca_cert", "mqtt.pem"]
   - ["pdu", "o", {title: "PDU settings"}]
   - ["pdu.hostname", "s", {title: "Device hostname"}]
   - ["pdu.hostname", "pdu-test"]
@@ -43,21 +53,26 @@ config_schema:
   - ["pdu.state_interval", 24]
   - ["pdu.modbus_interval", "i", {title: "Modbus polling interval, in seconds"}]
   - ["pdu.modbus_interval", 5]
+  - ["pdu.mqtt_interval", "i", {title: "MQTT reporting interval, in seconds"}]
+  - ["pdu.mqtt_interval", 60]
 
 # List of libraries used by this app, in order of initialisation
 libs:
   - origin: https://github.com/mongoose-os-libs/wifi
+  - origin: https://github.com/mongoose-os-libs/mqtt
   - origin: https://github.com/mongoose-os-libs/http-server
   - origin: https://github.com/mongoose-os-libs/ota-http-server
   - origin: https://github.com/mongoose-os-libs/rpc-common
   - origin: https://github.com/mongoose-os-libs/rpc-ws
   - origin: https://github.com/mongoose-os-libs/rpc-uart
+  - origin: https://github.com/mongoose-os-libs/rpc-mqtt
   - origin: https://github.com/mongoose-os-libs/rpc-service-config
   - origin: https://github.com/mongoose-os-libs/rpc-service-ota
   - origin: https://github.com/mongoose-os-libs/rpc-service-fs
   - origin: https://github.com/mongoose-os-libs/sntp
   - origin: https://github.com/suyashmathema/mongoose-os-modbus
     name: modbus
+
 
 # Used by the mos tool to catch mos binaries incompatible with this file format
 manifest_version: 2017-05-18

@@ -8,8 +8,10 @@ RS485 sensor transmitter MODBUS-RTU" on Aliexpress for good examples).
 The ESP32 connects using serial to the serial output of the current sensor, before
 it is turned into RS-485. It is then no longer advised to use RS-485. It will read
 the current sensor outputs once every 5 seconds, and integrate the total power use
-per channel. It will periodically save its state to flash, in order to survive
-power failures, reboots and firmware updates.
+per channel. It will periodically save its state to flash (see configuration
+parameter `pdu.state_interval`), in order to survive power failures, reboots and
+firmware updates. When rebooting or updating firmware, case should be taken to
+persist the state to flash, by calling RPC `State.Write` (details below).
 
 ## Prometheus Metrics
 
@@ -30,11 +32,11 @@ The `State` RPC Service either writes the statefile describing the current
 PDU state to flash, or reads it back from flash into memory.
 
 The `Channel` RPC Service takes either no arguments, in which case report for
-all channels is given as a list, or if a parameter `{idx: 0 }` is present, only
+all channels is given as a list, or if a parameter `idx` is present, only
 that one channel is returned as a scalar. Note that channels are run from 0..15.
-When calling `Channel.Clear`, care should be taken to also persist the state to
-flash with `State.Write`, so that restarts do not inadvertently restore old
-state.
+When calling `Channel.Clear`, which zeros the current and consumption counters,
+care should be taken to also persist the state to flash with `State.Write`, so
+that restarts do not inadvertently restore old state.
 
 Examples:
 
@@ -56,7 +58,7 @@ $ mos call Channel.Clear '{"idx": 15 }' && mos call State.Write
 
 ## PubSub
 
-The firmware sends periodical updates to a configured `MQTT` server. The
+The firmware sends periodical status updates to a configured `MQTT` server. The
 following events are sent:
 
 *    Startup: A message is sent to `/mongoose/broadcast/stat/id` with
@@ -66,5 +68,7 @@ following events are sent:
 
 Examples:
 ```
-TODO(pim)
+/mongoose/broadcast/stat/id {"deviceid": "esp32_5866D0", "macaddress": "D8A01D5866D0",
+                             "sta_ip": "192.168.2.210", "ap_ip": "", "app": "pdu",
+                             "arch": "esp32", "uptime": 3}
 ```
